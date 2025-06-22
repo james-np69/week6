@@ -37,20 +37,23 @@ public class SecondServlet extends HttpServlet {
 			PrintWriter out = response.getWriter();
 
 			HttpSession session = request.getSession(false);
-		    if (session == null) {
-		        out.println("session was invalidated.");
-		    } else {
-		        out.println("Session could not be invalidated.");
-		    }
-			String n = (String) session.getAttribute("userName");
-			out.println("the username is:" + n);
-	        String email = (String) session.getAttribute("emailAttribute");
-	        out.println("the emailattribute is:" + email);
-			out.close();
+			if (session == null) {
+			    out.println("Session was invalidated.<br>");
+			} else {
+			    out.println("Session is still active.<br>");
 
-//		} catch (Exception e) {
-//			System.out.println(e);
-//		}
+			    String n = (String) session.getAttribute("userName");
+			    String email = (String) session.getAttribute("emailAttribute");
+			    String age = (String) session.getAttribute("age");
+
+			    out.println("userName: " + (n != null ? n : "not found") + "<br>");
+			    out.println("emailAttribute: " + (email != null ? email : "not found") + "<br>");
+			    out.println("age: " + (age != null ? age : "not found") + "<br>");
+
+			    session.removeAttribute("age");
+			    out.println("age attribute removed from session.<br>");
+			}
+
 	}
 
 	/**

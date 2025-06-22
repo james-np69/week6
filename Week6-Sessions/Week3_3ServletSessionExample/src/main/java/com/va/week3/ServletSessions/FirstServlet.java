@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.Date;
 
 /* Author - Vivek
  * Date - Sept 25- 2021
@@ -50,21 +51,37 @@ public class FirstServlet extends HttpServlet {
 			
 			HttpSession session = request.getSession();
 			session.setAttribute("userName", n);
+
 			session.invalidate();
-			out.print("<a href='Session invalidated'</a>");
+			System.out.println("Session invalidated.");
 
-			session.setAttribute("emailAttribute", email);
-	        session.invalidate();
-	        out.println("added email");
+			try {
+			    session.setAttribute("emailAttribute", email);
+			    out.println("Unexpected: emailAttribute was set after session invalidation.");
+			} catch (IllegalStateException e) {
+			    out.println("<br>Failure: Cannot set email after session is invalidated.<br>");
+			    out.println("Error message: " + e.getMessage() + "<br>");
+			    System.out.println("Caught error: " + e.getMessage());
+			}
+			
+            HttpSession newSession = request.getSession(true);
+            newSession.setAttribute("age", "1");
+            out.println("Age attribute added to new session.<br>");
 
-			out.print("<a href='SecondServlet'>visit</a>");
-			 out.println("<br><a href=\"SecondServlet\">Go to SecondServlet</a>");
+            newSession.setMaxInactiveInterval(180);
+            out.println("Session timeout set to 180 seconds.<br>");
+
+            long lastAccessed = newSession.getLastAccessedTime();
+            System.out.println("Last Access Time: " + new Date(lastAccessed));
+            System.out.println("Session timeout: " + newSession.getMaxInactiveInterval() + " seconds");
+
+            out.println("<br><a href='SecondServlet'>Go to SecondServlet</a>");
+			
 			out.close();
 
 		} catch (Exception e) {
 			System.out.println("Unable to set emailattribute " 
 	                    + e.getMessage() + "<br>");
-//			System.out.println(e);
 		}
 	}
 

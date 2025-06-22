@@ -42,7 +42,8 @@ public class SecondServlet extends HttpServlet {
 		    } else {
 		        out.println("Session could not be invalidated.");
 		    }
-//			String n = (String) session.getAttribute("userName");
+			String n = (String) session.getAttribute("userName");
+			out.println("the username is:" + n);
 	        String email = (String) session.getAttribute("emailAttribute");
 	        out.println("the emailattribute is:" + email);
 			out.close();

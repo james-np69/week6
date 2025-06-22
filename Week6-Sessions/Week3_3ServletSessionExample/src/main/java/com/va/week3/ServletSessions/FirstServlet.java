@@ -40,7 +40,7 @@ public class FirstServlet extends HttpServlet {
 
 			response.setContentType("text/html");
 			PrintWriter out = response.getWriter();
-//			String n = request.getParameter("userName");
+			String n = request.getParameter("userName");
 //			out.print("Welcome " + n);
 			String email = request.getParameter("email");
 			out.print("Welcome " + email);
@@ -49,7 +49,7 @@ public class FirstServlet extends HttpServlet {
 	 */
 			
 			HttpSession session = request.getSession();
-//			session.setAttribute("userName", n);
+			session.setAttribute("userName", n);
 			session.invalidate();
 			out.print("<a href='Session invalidated'</a>");
 
